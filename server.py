@@ -1,4 +1,5 @@
 import os
+import logging
 
 from decouple import config
 from pyftpdlib.authorizers import DummyAuthorizer
@@ -17,6 +18,9 @@ def main():
     # Instantiate FTP handler class
     handler = FTPHandler
     handler.authorizer = authorizer
+
+    # Configure logging
+    logging.basicConfig(level=logging.INFO)
 
     # Define a customized banner (string returned when client connects)
     handler.banner = "pyftpdlib based ftpd ready."
