@@ -1,19 +1,15 @@
-import os
 import logging
 
-from decouple import config
-from pyftpdlib.authorizers import DummyAuthorizer
+from pyftpdlib.authorizers import WindowsAuthorizer
 from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
 
 def main():
-    # Instantiate a dummy authorizer for managing 'virtual' users
-    authorizer = DummyAuthorizer()
-
-    # Define a new user having full r/w permissions and a read-only
-    # anonymous user
-    authorizer.add_user(config('USER'), config('PASSWORD'), '.', perm=config('PERMS'))
-    authorizer.add_anonymous(os.getcwd())
+    authorizer = WindowsAuthorizer()
+    # Use Guest user with empty password to handle anonymous sessions.
+    # Guest user must be enabled first, empty password set and profile
+    # directory specified.
+    #authorizer = WindowsAuthorizer(anonymous_user="Guest", anonymous_password="")
 
     # Instantiate FTP handler class
     handler = FTPHandler
